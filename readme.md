@@ -1,7 +1,7 @@
 # 健康检查服务
 
 ### 架构
-![架构](https://github.com/laynefyc/xhgui-branch/raw/xuanwolei/inspect/main/docs/images/inspect.png)
+![架构](https://raw.githubusercontent.com/xuanwolei/inspect/main/docs/images/inspect.png)
 
 ### 特性
 - 多协议支持 http1.1/http2.0/websocket/tcp/udp 
@@ -915,6 +915,6 @@ CREATE TABLE `config` (
 > 对于有域名的项目，建议配置域名监控外，再加上目标服务器ip监控，在出现dns或cdn节点异常时可以提供参考。
 
 ### 钉钉自定义机器人配置参考
-![image](https://github.com/laynefyc/xhgui-branch/raw/xuanwolei/inspect/main/docs/images/rebot_config.png)
+![image](https://raw.githubusercontent.com/xuanwolei/inspect/main/docs/images/rebot_config.png)
 
 > 配置关键词“项目”
