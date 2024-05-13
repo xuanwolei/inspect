@@ -1,6 +1,7 @@
-# 健康检查说明
+# 健康检查服务
 
-![image](http://note.youdao.com/yws/public/resource/8309f1b754815f1fa60c45afd78b2196/xmlnote/45BCE3B68B2946AF953F4F4A82B3CA10/11066)
+### 架构
+![架构](https://github.com/laynefyc/xhgui-branch/raw/xuanwolei/inspect/main/docs/images/inspect.png)
 
 ### 特性
 - 多协议支持 http1.1/http2.0/websocket/tcp/udp 
@@ -46,6 +47,38 @@
 | -3        |   客户端请求发出后，服务器强制切断连接    | 
 | -4        |   DNS解析失败    | 
 > 对于http相关协议，会存在http状态码，其他协议除了上诉的4个状态外，还有会返回linux错误码（具体可查看linux错误码参照表）。
+
+
+## 部署
+### 依赖环境
+- php7+
+- php swoole4.x
+- php inotify扩展
+- php yaf扩展
+- influxdb数据库
+- mysql数据库
+- 
+### 数据库表
+```
+CREATE TABLE `config` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'http' COMMENT '监控类型：包含http,tcp,udp',
+  `name` varchar(225) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '配置名称',
+  `http_host` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hosts` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `paths` text COLLATE utf8_unicode_ci,
+  `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `level` int(2) unsigned DEFAULT '1',
+  `timeout` int(10) unsigned NOT NULL DEFAULT '3000',
+  `state` int(2) unsigned DEFAULT '1',
+  `desc` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `notice_token` varchar(128) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '钉钉token',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+```
 
 ### linux错误码参照表
 
@@ -864,27 +897,7 @@
 </tr>
 </tbody></table>
 
-## 数据库表
-```
-CREATE TABLE `config` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'http' COMMENT '监控类型：包含http,tcp,udp',
-  `name` varchar(225) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '配置名称',
-  `http_host` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `hosts` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `paths` text COLLATE utf8_unicode_ci,
-  `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `level` int(2) unsigned DEFAULT '1',
-  `timeout` int(10) unsigned NOT NULL DEFAULT '3000',
-  `state` int(2) unsigned DEFAULT '1',
-  `desc` varchar(225) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `notice_token` varchar(128) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '钉钉token',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-```
+
 
 ## 常见问题
 ### 收到了报警通知，但是自己访问确没有异常？
@@ -902,5 +915,6 @@ CREATE TABLE `config` (
 > 对于有域名的项目，建议配置域名监控外，再加上目标服务器ip监控，在出现dns或cdn节点异常时可以提供参考。
 
 ### 钉钉自定义机器人配置参考
-![image](http://note.youdao.com/yws/public/resource/8309f1b754815f1fa60c45afd78b2196/xmlnote/F33A94178347453B9F023436BD698D31/11143)
+![image](https://github.com/laynefyc/xhgui-branch/raw/xuanwolei/inspect/main/docs/images/rebot_config.png)
+
 > 配置关键词“项目”
