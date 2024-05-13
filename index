@@ -1,0 +1,10 @@
+<?php
+//开启强类型
+
+declare(strict_types=1);
+define('APPLICATION_PATH', str_replace("\\",'/',dirname(__FILE__)));
+define('APP_PATH', APPLICATION_PATH.'/application/');
+//修改配置
+$application = new Yaf\Application( APPLICATION_PATH . "/conf/application.ini");
+$application->bootstrap()->run();
+?>

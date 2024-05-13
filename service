@@ -1,0 +1,22 @@
+<?php
+/**
+ *	定时任务入口
+ */
+//开启强类型
+declare(strict_types=1);
+require "./vendor/autoload.php";
+
+if (PHP_SAPI != 'cli') {
+	die('The program can\'t use http to excute!');
+}
+define('APPLICATION_PATH', str_replace("\\",'/',dirname(__FILE__)));
+define('APP_PATH', APPLICATION_PATH.'/application/');
+define('CONFIG_PATH', APPLICATION_PATH . "/conf/application.ini");
+
+//修改配置
+$application = new Yaf\Application(CONFIG_PATH);
+$application->bootstrap();
+//命令行调用示例  php crontab.php request_uri="/home/request/collection" 
+$application->getDispatcher()->dispatch(new Yaf\Request\Simple());
+$application->run();
+
